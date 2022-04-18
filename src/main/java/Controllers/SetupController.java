@@ -178,7 +178,7 @@ public class SetupController {
         }
     }
 
-    public boolean placeValidator(Ship ship) {  // TODO ADD OUT OF BOUNDS VALIDATION
+    public boolean placeValidator(Ship ship) {
         double xCord;
         double yCord;
         if (ship.isHorizontal()) {
@@ -208,13 +208,13 @@ public class SetupController {
                     }
                 }
             }
-        } else { // TODO FIX VERTICAL VALIDATION
-            for (int i = yGrid-1; i < yGrid+ship.getTiles()+1; i++) {
-                for (int j = xGrid-1; j < xGrid+2; j++) {
+        } else {
+            for (int i = xGrid-1; i < xGrid+2; i++) {
+                for (int j = yGrid-1; j < yGrid+ship.getTiles()+1; j++) {
                     if (i >= 0 && i < 10 && j >= 0 && j < 10) {
                         int finalJ = j;
                         int finalI = i;
-                        if (!(IntStream.of(ship.getYCoordinates()).anyMatch(x -> x == finalI) && IntStream.of(ship.getXCoordinates()).anyMatch(y -> y == finalJ))) {
+                        if (!(IntStream.of(ship.getXCoordinates()).anyMatch(x -> x == finalI) && IntStream.of(ship.getYCoordinates()).anyMatch(y -> y == finalJ))) {
                             if (grid[i][j].getFill() == Color.CRIMSON) {
                                 return false;
                             }
