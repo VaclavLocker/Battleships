@@ -15,6 +15,9 @@ import java.util.stream.IntStream;
 public class SetupController {
 
     @FXML
+    Button readyBtn;
+
+    @FXML
     Pane pane;
 
     @FXML
@@ -27,15 +30,19 @@ public class SetupController {
     private final int spots = 10;
     private final int squareSize = size / spots;
     private final int numberOfPieces = 5;
+    private int lastSelectedShip;
 
     private ArrayList<Ship> ships;
     private Rectangle[][] grid;
 
-
     public void rotateShip() {
-        Ship ship = ships.get(0);
+        Ship ship = ships.get(lastSelectedShip);
         ship.rotate();
         released(ship);
+        if (!placeValidator(ship)) { // TODO FIX VALIDATION OF ROTATION
+            ship.rotate();
+            released(ship);
+        }
     }
 
     @FXML
@@ -74,7 +81,11 @@ public class SetupController {
     }
 
     public void pressed(Ship ship) {
+        ships.forEach(localShip -> {
+            localShip.setColor(Color.GRAY);
+        });
         ship.setColor(Color.DARKGOLDENROD);
+        lastSelectedShip = ships.indexOf(ship);
     }
 
     public void dragged(MouseEvent event, Ship ship) {
@@ -101,7 +112,6 @@ public class SetupController {
     }
 
     public void released(Ship ship) {
-        ship.setColor(Color.GRAY);
         try {
             if (!placeValidator(ship)) {
               ship.setStartY(ship.getYCoordinates()[0]*squareSize);
@@ -135,7 +145,6 @@ public class SetupController {
                         grid[gridX-(i+1)][gridY].setFill(Color.CRIMSON);
                         grid[gridX+(i+1)][gridY].setFill(Color.CRIMSON);
                     }
-                    System.out.println(gridX);
                     ship.setStartX(squareSize * gridX - (squareSize*((double)(ship.getTiles()-1)/2)));
                 }
                 ship.setStartY(squareSize * gridY);
@@ -165,9 +174,11 @@ public class SetupController {
             }
             ship.draw();
         } catch (Exception e) {
+            if (!ship.isHorizontal()) {
+                ship.rotate();
+            }
             ship.setStartX(ship.getDockyardX());
             ship.setStartY(ship.getDockyardY());
-            System.err.println("CHYBA");
             for (int i = 0; i < ship.getXCoordinates().length; i++) {
                 for (int j = 0; j < ship.getYCoordinates().length; j++) {
                     grid[ship.getXCoordinates()[i]][ship.getYCoordinates()[j]].setFill(Color.BLUE);
@@ -224,5 +235,9 @@ public class SetupController {
             }
         }
         return true;
+    }
+
+    public void playerReady() {
+
     }
 }

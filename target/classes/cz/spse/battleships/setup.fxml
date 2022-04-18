@@ -8,20 +8,23 @@
 <?import javafx.scene.text.Font?>
 
 <BorderPane fx:id="layout" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.SetupController">
-   <right>
-      <Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" BorderPane.alignment="BOTTOM_RIGHT" />
-   </right>
    <top>
-      <Label text="Battleships" BorderPane.alignment="CENTER">
-         <font>
-            <Font size="25.0" />
-         </font>
-         <padding>
-            <Insets top="15.0" />
-         </padding>
-      </Label>
+      <Pane prefHeight="51.0" prefWidth="700.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="readyBtn" layoutX="603.0" layoutY="13.0" mnemonicParsing="false" onAction="#playerReady" text="Start" />
+            <Label alignment="CENTER" layoutX="283.0" prefHeight="23.0" prefWidth="135.0" text="Battleships">
+               <font>
+                  <Font size="25.0" />
+               </font>
+               <padding>
+                  <Insets top="15.0" />
+               </padding>
+            </Label>
+            <Button fx:id="rotateBtn" layoutX="503.0" layoutY="13.0" mnemonicParsing="false" onAction="#rotateShip" text="Rotate" />
+         </children>
+      </Pane>
    </top>
-   <center>
-      <Button fx:id="rotateBtn" mnemonicParsing="false" onAction="#rotateShip" text="Rotate" BorderPane.alignment="TOP_RIGHT" />
-   </center>
+   <bottom>
+      <Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" BorderPane.alignment="CENTER_RIGHT" />
+   </bottom>
 </BorderPane>
