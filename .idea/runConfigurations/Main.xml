@@ -1,11 +1,11 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="HelloApplication" type="Application" factoryName="Application" nameIsGenerated="true">
-    <option name="MAIN_CLASS_NAME" value="cz.spse.battleships.HelloApplication" />
+  <configuration default="false" name="Main" type="Application" factoryName="Application" nameIsGenerated="true">
+    <option name="MAIN_CLASS_NAME" value="cz.spse.battleships.Main" />
     <module name="Battleships" />
     <option name="VM_PARAMETERS" value="--module-path &quot;C:\Program Files\Java\javafx-sdk-18\lib&quot; --add-modules javafx.controls,javafx.fxml" />
     <extension name="coverage">
       <pattern>
-        <option name="PATTERN" value="cz.spse.battleships.*" />
+        <option name="PATTERN" value="Controllers.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>
