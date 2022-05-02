@@ -37,9 +37,7 @@ public class SetupController {
 
     public void rotateShip() {
         Ship ship = ships.get(lastSelectedShip);
-        ship.rotate();
-        released(ship);
-        if (!placeValidator(ship)) { // TODO FIX VALIDATION OF ROTATION
+        if (validateShipRotation(ship)) {
             ship.rotate();
             released(ship);
         }
@@ -123,55 +121,7 @@ public class SetupController {
                 }
             }
             ship.clearCoordinates();
-            int gridX;
-            int gridY;
-            if (ship.isHorizontal()) {
-                gridY = (int) (ship.getStartY() + squareSize/2) / squareSize;
-                ship.addYCoordinate(gridY);
-                if(ship.even()) {
-                    gridX = (int) (ship.getStartX() + squareSize/2) / squareSize;
-                    for (int i = 0; i < ship.getTiles(); i++) {
-                        ship.addXCoordinate(gridX+i);
-                        grid[gridX+i][gridY].setFill(Color.CRIMSON);
-                    }
-                    ship.setStartX(squareSize * gridX);
-                } else {
-                    gridX = (int) (ship.getStartX() + ship.getLength()/2) / squareSize;
-                    ship.addXCoordinate(gridX);
-                    grid[gridX][gridY].setFill(Color.CRIMSON);
-                    for (int i = 0; i < (ship.getTiles()-1)/2; i++) {
-                        ship.addXCoordinate(gridX-(i+1));
-                        ship.addXCoordinate(gridX+(i+1));
-                        grid[gridX-(i+1)][gridY].setFill(Color.CRIMSON);
-                        grid[gridX+(i+1)][gridY].setFill(Color.CRIMSON);
-                    }
-                    ship.setStartX(squareSize * gridX - (squareSize*((double)(ship.getTiles()-1)/2)));
-                }
-                ship.setStartY(squareSize * gridY);
-            } else {
-                gridX = (int) (ship.getStartX() + squareSize/2) / squareSize;
-                ship.addXCoordinate(gridX);
-                if(ship.even()) {
-                    gridY = (int) (ship.getStartY() + squareSize/2) / squareSize;
-                    for (int i = 0; i < ship.getTiles(); i++) {
-                        ship.addYCoordinate(gridY+i);
-                        grid[gridX][gridY+i].setFill(Color.CRIMSON);
-                    }
-                    ship.setStartY(squareSize * gridY);
-                } else {
-                    gridY = (int) (ship.getStartY() + ship.getWidth()/2) / squareSize;
-                    ship.addYCoordinate(gridY);
-                    grid[gridX][gridY].setFill(Color.CRIMSON);
-                    for (int i = 0; i < (ship.getTiles()-1)/2; i++) {
-                        ship.addYCoordinate(gridY-(i+1));
-                        ship.addYCoordinate(gridY+(i+1));
-                        grid[gridX][gridY-(i+1)].setFill(Color.CRIMSON);
-                        grid[gridX][gridY+(i+1)].setFill(Color.CRIMSON);
-                    }
-                    ship.setStartY(squareSize * gridY - (squareSize*((double)(ship.getTiles()-1)/2)));
-                }
-                ship.setStartX(squareSize * gridX);
-            }
+            setBottomTiles(ship);
             ship.draw();
         } catch (Exception e) {
             if (!ship.isHorizontal()) {
@@ -186,6 +136,58 @@ public class SetupController {
             }
             ship.clearCoordinates();
             ship.draw();
+        }
+    }
+
+    public void setBottomTiles(Ship ship) {
+        int gridX;
+        int gridY;
+        if (ship.isHorizontal()) {
+            gridY = (int) (ship.getStartY() + squareSize/2) / squareSize;
+            ship.addYCoordinate(gridY);
+            if(ship.even()) {
+                gridX = (int) (ship.getStartX() + squareSize/2) / squareSize;
+                for (int i = 0; i < ship.getTiles(); i++) {
+                    ship.addXCoordinate(gridX+i);
+                    grid[gridX+i][gridY].setFill(Color.CRIMSON);
+                }
+                ship.setStartX(squareSize * gridX);
+            } else {
+                gridX = (int) (ship.getStartX() + ship.getLength()/2) / squareSize;
+                ship.addXCoordinate(gridX);
+                grid[gridX][gridY].setFill(Color.CRIMSON);
+                for (int i = 0; i < (ship.getTiles()-1)/2; i++) {
+                    ship.addXCoordinate(gridX-(i+1));
+                    ship.addXCoordinate(gridX+(i+1));
+                    grid[gridX-(i+1)][gridY].setFill(Color.CRIMSON);
+                    grid[gridX+(i+1)][gridY].setFill(Color.CRIMSON);
+                }
+                ship.setStartX(squareSize * gridX - (squareSize*((double)(ship.getTiles()-1)/2)));
+            }
+            ship.setStartY(squareSize * gridY);
+        } else {
+            gridX = (int) (ship.getStartX() + squareSize/2) / squareSize;
+            ship.addXCoordinate(gridX);
+            if(ship.even()) {
+                gridY = (int) (ship.getStartY() + squareSize/2) / squareSize;
+                for (int i = 0; i < ship.getTiles(); i++) {
+                    ship.addYCoordinate(gridY+i);
+                    grid[gridX][gridY+i].setFill(Color.CRIMSON);
+                }
+                ship.setStartY(squareSize * gridY);
+            } else {
+                gridY = (int) (ship.getStartY() + ship.getWidth()/2) / squareSize;
+                ship.addYCoordinate(gridY);
+                grid[gridX][gridY].setFill(Color.CRIMSON);
+                for (int i = 0; i < (ship.getTiles()-1)/2; i++) {
+                    ship.addYCoordinate(gridY-(i+1));
+                    ship.addYCoordinate(gridY+(i+1));
+                    grid[gridX][gridY-(i+1)].setFill(Color.CRIMSON);
+                    grid[gridX][gridY+(i+1)].setFill(Color.CRIMSON);
+                }
+                ship.setStartY(squareSize * gridY - (squareSize*((double)(ship.getTiles()-1)/2)));
+            }
+            ship.setStartX(squareSize * gridX);
         }
     }
 
@@ -222,6 +224,41 @@ public class SetupController {
         } else {
             for (int i = xGrid-1; i < xGrid+2; i++) {
                 for (int j = yGrid-1; j < yGrid+ship.getTiles()+1; j++) {
+                    if (i >= 0 && i < 10 && j >= 0 && j < 10) {
+                        int finalJ = j;
+                        int finalI = i;
+                        if (!(IntStream.of(ship.getXCoordinates()).anyMatch(x -> x == finalI) && IntStream.of(ship.getYCoordinates()).anyMatch(y -> y == finalJ))) {
+                            if (grid[i][j].getFill() == Color.CRIMSON) {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean validateShipRotation(Ship ship) {
+        int xGrid = (int) (ship.getStartX() + squareSize/2) / squareSize;
+        int yGrid = (int) (ship.getStartY() + squareSize/2) / squareSize;
+        if (ship.isHorizontal()) {
+            for (int i = xGrid-1; i < xGrid+2; i++) {
+                for (int j = yGrid-1; j < yGrid+ship.getTiles()+1; j++) {
+                    if (i >= 0 && i < 10 && j >= 0 && j < 10) {
+                        int finalJ = j;
+                        int finalI = i;
+                        if (!(IntStream.of(ship.getXCoordinates()).anyMatch(x -> x == finalI) && IntStream.of(ship.getYCoordinates()).anyMatch(y -> y == finalJ))) {
+                            if (grid[i][j].getFill() == Color.CRIMSON) {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            for (int i = xGrid-1; i < xGrid+ship.getTiles()+1; i++) {
+                for (int j = yGrid-1; j < yGrid+2; j++) {
                     if (i >= 0 && i < 10 && j >= 0 && j < 10) {
                         int finalJ = j;
                         int finalI = i;
