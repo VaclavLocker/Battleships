@@ -1,18 +1,23 @@
 package Controllers;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import objects.Ship;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.stream.IntStream;
 
 public class SetupController {
+
+    @FXML
+    StackPane stack;
 
     @FXML
     Button readyBtn;
@@ -26,6 +31,10 @@ public class SetupController {
     @FXML
     Button rotateBtn;
 
+    GridPane errorPane;
+    Pane waitingPane;
+    Button closePaneButton;
+
     private final int size = 400;
     private final int spots = 10;
     private final int squareSize = size / spots;
@@ -34,6 +43,8 @@ public class SetupController {
 
     private ArrayList<Ship> ships;
     private Rectangle[][] grid;
+
+    private int[] seaTiles = new int[100];
 
     public void rotateShip() {
         Ship ship = ships.get(lastSelectedShip);
@@ -45,6 +56,23 @@ public class SetupController {
 
     @FXML
     public void initialize() {
+        // Setup Error page if player didn't place all ships on board and tried to start game
+        errorPane = new GridPane();
+        waitingPane = new Pane();
+        closePaneButton = new Button();
+        errorPane.setStyle("-fx-background-color: gray");
+        Label text = new Label("Musíš dát všechny lodě na desku");
+        closePaneButton.setText("Zpět");
+        closePaneButton.setOnMouseClicked(mouseEvent -> errorPane.setVisible(false));
+        VBox center = new VBox(text, closePaneButton);
+        center.setAlignment(Pos.CENTER);
+        errorPane.getChildren().add(center);
+        errorPane.setAlignment(Pos.CENTER);
+        stack.getChildren().add(1, errorPane);
+        errorPane.setVisible(false);
+
+        // Create Gameboard Sea Grid
+        Arrays.fill(seaTiles, 0);
         grid = new Rectangle[spots][spots];
         for (int i = 0; i < size; i+= squareSize) {
             for (int j = 0; j < size; j+= squareSize) {
@@ -55,6 +83,8 @@ public class SetupController {
                 pane.getChildren().add(r);
             }
         }
+
+        // Create Ships
         ships = new ArrayList<>();
         for (int i = 0; i < numberOfPieces; i++) {
             Rectangle r = new Rectangle();
@@ -62,7 +92,7 @@ public class SetupController {
             r.setStroke(Color.BLACK);
             int x = -250;
             int y = size/(numberOfPieces+1)*(i+1);
-            Ship ship = new Ship(x, y, squareSize*(i+1), squareSize, r, spots);
+            Ship ship = new Ship(x, y, squareSize*(i+1), squareSize, r, spots, (i+1));
             ships.add(ship);
             r.setOnMousePressed(event -> pressed(ship));
             r.setOnMouseDragged(event -> dragged(event, ship));
@@ -275,6 +305,22 @@ public class SetupController {
     }
 
     public void playerReady() {
-
+        if (ships.stream().noneMatch(ship -> ship.getDockyardX() == ship.getStartX())) {
+            ships.forEach(ship -> {
+                if (ship.isHorizontal()) {
+                    for (int xCord:ship.getXCoordinates()) {
+                        seaTiles[(ship.getYCoordinates()[0]+1)*spots-spots+(xCord+1)] = ship.getId();
+                    }
+                } else {
+                    for (int yCord:ship.getYCoordinates()) {
+                        seaTiles[(ship.getXCoordinates()[0]+1)*spots-spots+(yCord+1)] = ship.getId();
+                    }
+                }
+            });
+            // show pane
+            // switch scene
+        } else {
+            errorPane.setVisible(true);
+        };
     }
 }

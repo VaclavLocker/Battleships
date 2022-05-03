@@ -18,8 +18,9 @@ public class Ship {
     private boolean horizontal = true;
     private double dockyardX;
     private double dockyardY;
+    private int id;
 
-    public Ship(double startX, double startY, double length, double width, Rectangle rectangle, int spots) {
+    public Ship(double startX, double startY, double length, double width, Rectangle rectangle, int spots, int id) {
         this.startX = startX;
         this.startY = startY;
         this.length = length;
@@ -30,6 +31,7 @@ public class Ship {
         this.yCoordinates = new boolean[spots];
         this.dockyardX = startX;
         this.dockyardY = startY;
+        this.id = id;
     }
 
     public double getStartX() {
@@ -129,6 +131,10 @@ public class Ship {
 
     public double getDockyardY() {
         return dockyardY;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public void draw() {
