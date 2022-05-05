@@ -1,14 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="Controllers.GameboardController"
-            prefHeight="400.0" prefWidth="600.0">
-
-</AnchorPane>
+<StackPane fx:id="stack" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.GameboardController">
+   <children>
+      <BorderPane fx:id="layout" prefHeight="200.0" prefWidth="200.0">
+         <left>
+            <Pane fx:id="yourPane" prefHeight="400.0" prefWidth="400.0" BorderPane.alignment="CENTER" />
+         </left>
+         <right>
+            <Pane fx:id="enemyPane" prefHeight="400.0" prefWidth="400.0" BorderPane.alignment="CENTER" />
+         </right>
+         <top>
+            <Pane prefHeight="100.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label fx:id="You" layoutX="191.0" layoutY="43.0" text="Ty" />
+                  <Label fx:id="EnemyPlayer" layoutX="720.0" layoutY="43.0" text="Nepřítel" />
+               </children>
+            </Pane>
+         </top>
+      </BorderPane>
+   </children>
+</StackPane>

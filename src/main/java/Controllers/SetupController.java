@@ -1,15 +1,22 @@
 package Controllers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 import objects.Ship;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.IntStream;
@@ -304,7 +311,7 @@ public class SetupController {
         return true;
     }
 
-    public void playerReady() {
+    public void playerReady(ActionEvent event) throws IOException {
         if (ships.stream().noneMatch(ship -> ship.getDockyardX() == ship.getStartX())) {
             ships.forEach(ship -> {
                 if (ship.isHorizontal()) {
@@ -319,6 +326,12 @@ public class SetupController {
             });
             // show pane
             // switch scene
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Parent root = FXMLLoader.load(getClass().getResource("/cz/spse/battleships/gameboard.fxml"));
+            stage.setScene(new Scene(root));
+            stage.show();
+
         } else {
             errorPane.setVisible(true);
         };
