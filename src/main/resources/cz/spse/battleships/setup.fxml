@@ -8,14 +8,14 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-
 <StackPane fx:id="stack" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.SetupController">
    <children>
       <BorderPane fx:id="layout" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="700.0">
          <top>
             <Pane prefHeight="51.0" prefWidth="700.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="readyBtn" layoutX="603.0" layoutY="13.0" mnemonicParsing="false" onAction="#playerReady" text="Start" />
+                  <Button layoutX="140.0" layoutY="13.0" mnemonicParsing="false" onAction="#startClient" text="Klient" />
+                  <Button layoutX="14.0" layoutY="13.0" mnemonicParsing="false" onAction="#startServer" text="Server" />
                   <Label alignment="CENTER" layoutX="283.0" prefHeight="23.0" prefWidth="135.0" text="Battleships">
                      <font>
                         <Font size="25.0" />
@@ -24,7 +24,7 @@
                         <Insets top="15.0" />
                      </padding>
                   </Label>
-                  <Button fx:id="rotateBtn" layoutX="503.0" layoutY="13.0" mnemonicParsing="false" onAction="#rotateShip" text="Rotate" />
+                  <Button fx:id="rotateBtn" layoutX="635.0" layoutY="13.0" mnemonicParsing="false" onAction="#rotateShip" text="Rotate" />
                </children>
             </Pane>
          </top>

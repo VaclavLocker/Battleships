@@ -10,13 +10,14 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class LauncherController {
 
     @FXML
     private void startGame(ActionEvent event) throws IOException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/cz/spse/battleships/setup.fxml"));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/cz/spse/battleships/setup.fxml")));
         stage.setScene(new Scene(root));
         stage.show();
     }

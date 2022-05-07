@@ -19,15 +19,22 @@ import objects.Ship;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class SetupController {
 
-    @FXML
-    StackPane stack;
+    //Lukášovo info start
+    public static final int SERVER = 1;
+    public static final int CLIENT = 2;
+    public static ArrayList<Integer> seaTiles = new ArrayList<>(Collections.nCopies(100,0));
+    public static int type = CLIENT;
+    //Lukášovo info konec
 
     @FXML
-    Button readyBtn;
+    StackPane stack;
 
     @FXML
     Pane pane;
@@ -50,8 +57,6 @@ public class SetupController {
 
     private ArrayList<Ship> ships;
     private Rectangle[][] grid;
-
-    private int[] seaTiles = new int[100];
 
     public void rotateShip() {
         Ship ship = ships.get(lastSelectedShip);
@@ -79,7 +84,6 @@ public class SetupController {
         errorPane.setVisible(false);
 
         // Create Gameboard Sea Grid
-        Arrays.fill(seaTiles, 0);
         grid = new Rectangle[spots][spots];
         for (int i = 0; i < size; i+= squareSize) {
             for (int j = 0; j < size; j+= squareSize) {
@@ -311,24 +315,48 @@ public class SetupController {
         return true;
     }
 
+
+    public void startServer(ActionEvent event) throws IOException {
+        type = SERVER;
+/*
+        int[] tempTiles = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        seaTiles = (ArrayList<Integer>) IntStream.of(tempTiles).boxed().collect(Collectors.toList());
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/cz/spse/battleships/gameboard.fxml")));
+        stage.setScene(new Scene(root));
+        stage.show();
+*/
+        playerReady(event);
+    }
+
+    public void startClient(ActionEvent event) throws IOException {
+/*
+        type = CLIENT;
+        int[] tempTiles = {0, 0, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 2, 2, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 1, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0};
+        seaTiles = (ArrayList<Integer>) IntStream.of(tempTiles).boxed().collect(Collectors.toList());
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/cz/spse/battleships/gameboard.fxml")));
+        stage.setScene(new Scene(root));
+        stage.show();
+*/
+        playerReady(event);
+    }
     public void playerReady(ActionEvent event) throws IOException {
         if (ships.stream().noneMatch(ship -> ship.getDockyardX() == ship.getStartX())) {
             ships.forEach(ship -> {
                 if (ship.isHorizontal()) {
                     for (int xCord:ship.getXCoordinates()) {
-                        seaTiles[(ship.getYCoordinates()[0]+1)*spots-spots+(xCord+1)] = ship.getId();
+                        seaTiles.set((ship.getYCoordinates()[0]+1)*spots-spots+(xCord+1), ship.getId());
                     }
                 } else {
                     for (int yCord:ship.getYCoordinates()) {
-                        seaTiles[(ship.getXCoordinates()[0]+1)*spots-spots+(yCord+1)] = ship.getId();
+                        seaTiles.set((yCord+1)*spots-spots+(ship.getXCoordinates()[0]+1), ship.getId());
                     }
                 }
             });
-            // show pane
-            // switch scene
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            Parent root = FXMLLoader.load(getClass().getResource("/cz/spse/battleships/gameboard.fxml"));
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/cz/spse/battleships/gameboard.fxml")));
             stage.setScene(new Scene(root));
             stage.show();
 

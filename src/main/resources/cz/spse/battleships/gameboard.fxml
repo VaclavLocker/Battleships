@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
 
-<StackPane fx:id="stack" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.GameboardController">
+<StackPane fx:id="stack" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="610.0" prefWidth="1015.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.GameboardController">
    <children>
       <BorderPane fx:id="layout" prefHeight="200.0" prefWidth="200.0">
          <left>
@@ -15,13 +20,52 @@
             <Pane fx:id="enemyPane" prefHeight="400.0" prefWidth="400.0" BorderPane.alignment="CENTER" />
          </right>
          <top>
-            <Pane prefHeight="100.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+            <Pane prefHeight="100.0" prefWidth="800.0" style="-fx-background-color: #e5e7eb;" BorderPane.alignment="CENTER">
                <children>
+                  <Label fx:id="EnemyPlayer" layoutX="778.0" layoutY="43.0" text="Nepřítel" />
                   <Label fx:id="You" layoutX="191.0" layoutY="43.0" text="Ty" />
-                  <Label fx:id="EnemyPlayer" layoutX="720.0" layoutY="43.0" text="Nepřítel" />
+                  <Label fx:id="turn" alignment="CENTER" contentDisplay="BOTTOM" layoutX="358.0" layoutY="24.0" prefHeight="53.0" prefWidth="300.0" text="Ty" textAlignment="CENTER">
+                     <font>
+                        <Font size="36.0" />
+                     </font>
+                  </Label>
                </children>
             </Pane>
          </top>
+         <bottom>
+            <Pane prefHeight="110.0" prefWidth="1015.0" style="-fx-background-color: #e5e7eb;" BorderPane.alignment="CENTER">
+               <children>
+                  <Label layoutX="53.0" layoutY="32.0" prefHeight="47.0" prefWidth="190.0" text="BATTLESHIPS">
+                     <font>
+                        <Font name="Arial Italic" size="24.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="856.0" layoutY="38.0" prefHeight="35.0" prefWidth="145.0" text="Jirák &amp; Locker 3.D">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+         </bottom>
+         <center>
+            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #e5e7eb;" BorderPane.alignment="CENTER">
+               <children>
+                  <Label alignment="CENTER" layoutX="71.0" layoutY="21.0" prefHeight="44.0" prefWidth="73.0" text="CHAT" textAlignment="CENTER">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="sendMsg" defaultButton="true" layoutX="8.0" layoutY="361.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="199.0" text="Odeslat" />
+                  <ScrollPane hbarPolicy="NEVER" layoutX="8.0" layoutY="65.0" prefHeight="253.0" prefWidth="200.0">
+                     <content>
+                        <TextArea fx:id="textArea" editable="false" prefHeight="250.0" prefWidth="200.0" />
+                     </content>
+                  </ScrollPane>
+                  <TextField fx:id="textField" layoutX="8.0" layoutY="329.0" prefHeight="25.0" prefWidth="200.0" />
+               </children>
+            </Pane>
+         </center>
       </BorderPane>
    </children>
 </StackPane>
