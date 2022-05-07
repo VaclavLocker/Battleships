@@ -58,7 +58,7 @@ public class GameBoardClient {
     public static int YOUR_TURN = 1;
     public static int ENEMY_TURN = 2;
     public static int WINNER = 3;
-    public static int TURN = YOUR_TURN;
+    public static int TURN = ENEMY_TURN;
     public static String messages = "";
 
 
@@ -70,6 +70,7 @@ public class GameBoardClient {
         textField = field;
         textArea = area;
 
+        turnLabel.setText("Nepřítel");
         message.setOnMouseClicked(event -> sendMsg());
 
         yourBoard = SetupController.seaTiles;
@@ -78,7 +79,7 @@ public class GameBoardClient {
     public void initialize() {
         Runnable Initialize = () -> {
             try {
-                socket = new Socket("127.0.0.1", PORT);
+                socket = new Socket("localhost", PORT);
 
                 System.out.println("CLIENT STARTED");
                 initCommunication(socket);
@@ -196,11 +197,11 @@ public class GameBoardClient {
     }
 
     private void fillYourBoard() {
-        int index = 0;
+        int index = 1;
 
         for (int i = 0; i < size; i += squareSize) {
             for (int j = 0; j < size; j += squareSize) {
-                Tile tile = new Tile(i, j, squareSize, squareSize, Tile.YOU, yourBoard.get(index));
+                Tile tile = new Tile(j, i, squareSize, squareSize, Tile.YOU, yourBoard.get(index));
                 yourTiles.add(tile);
                 yourPane.getChildren().add(tile);
 
@@ -210,11 +211,11 @@ public class GameBoardClient {
     }
 
     private void fillEnemyBoard() {
-        int index = 0;
+        int index = 1;
 
         for (int i = 0; i < size; i += squareSize) {
             for (int j = 0; j < size; j += squareSize) {
-                Tile tile = new Tile(i, j, squareSize, squareSize, Tile.ENEMY, enemyBoard.get(index));
+                Tile tile = new Tile(j, i, squareSize, squareSize, Tile.ENEMY, enemyBoard.get(index));
                 tile.setOnMouseClicked(event -> onClick(tile));
 
                 enemyTiles.add(tile);

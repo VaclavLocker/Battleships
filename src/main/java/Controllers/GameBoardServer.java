@@ -205,11 +205,11 @@ public class GameBoardServer {
 
     //HELPERS
     private void fillYourBoard() {
-        int index = 0;
+        int index = 1;
 
         for (int i = 0; i < size; i+= squareSize) {
             for (int j = 0; j < size; j+= squareSize) {
-                Tile tile = new Tile(i, j, squareSize, squareSize, Tile.YOU, yourBoard.get(index));
+                Tile tile = new Tile(j, i, squareSize, squareSize, Tile.YOU, yourBoard.get(index));
 
                 yourTiles.add(tile);
                 yourPane.getChildren().add(tile);
@@ -220,11 +220,11 @@ public class GameBoardServer {
     }
 
     private void fillEnemyBoard() {
-        int index = 0;
+        int index = 1;
 
         for (int i = 0; i < size; i+= squareSize) {
             for (int j = 0; j < size; j+= squareSize) {
-                Tile tile = new Tile(i, j, squareSize, squareSize, Tile.ENEMY, enemyBoard.get(index));
+                Tile tile = new Tile(j, i, squareSize, squareSize, Tile.ENEMY, enemyBoard.get(index));
                 tile.setOnMouseClicked(event -> onClick(tile));
 
                 enemyTiles.add(tile);

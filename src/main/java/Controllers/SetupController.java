@@ -18,10 +18,9 @@ import objects.Ship;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
-import java.util.stream.Collectors;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
 public class SetupController {
@@ -29,7 +28,7 @@ public class SetupController {
     //Lukášovo info start
     public static final int SERVER = 1;
     public static final int CLIENT = 2;
-    public static ArrayList<Integer> seaTiles = new ArrayList<>(Collections.nCopies(100,0));
+    public static ArrayList<Integer> seaTiles = new ArrayList<>(Collections.nCopies(101,0));
     public static int type = CLIENT;
     //Lukášovo info konec
 
@@ -318,27 +317,11 @@ public class SetupController {
 
     public void startServer(ActionEvent event) throws IOException {
         type = SERVER;
-/*
-        int[] tempTiles = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-        seaTiles = (ArrayList<Integer>) IntStream.of(tempTiles).boxed().collect(Collectors.toList());
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/cz/spse/battleships/gameboard.fxml")));
-        stage.setScene(new Scene(root));
-        stage.show();
-*/
         playerReady(event);
     }
 
     public void startClient(ActionEvent event) throws IOException {
-/*
         type = CLIENT;
-        int[] tempTiles = {0, 0, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 2, 2, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 1, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0};
-        seaTiles = (ArrayList<Integer>) IntStream.of(tempTiles).boxed().collect(Collectors.toList());
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/cz/spse/battleships/gameboard.fxml")));
-        stage.setScene(new Scene(root));
-        stage.show();
-*/
         playerReady(event);
     }
     public void playerReady(ActionEvent event) throws IOException {
