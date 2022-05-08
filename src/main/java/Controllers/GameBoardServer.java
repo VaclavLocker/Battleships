@@ -8,7 +8,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import objects.Tile;
-import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -45,10 +44,10 @@ public class GameBoardServer {
     private final int squareSize = size / spots;
 
     private ArrayList<Integer> yourBoard = new ArrayList<>(100);
-    private ArrayList<Integer> enemyBoard = new ArrayList<>(100);
+    private final ArrayList<Integer> enemyBoard = new ArrayList<>(100);
 
-    private ArrayList<Tile> yourTiles = new ArrayList<>(100);
-    private ArrayList<Tile> enemyTiles = new ArrayList<>(100);
+    private final ArrayList<Tile> yourTiles = new ArrayList<>(100);
+    private final ArrayList<Tile> enemyTiles = new ArrayList<>(100);
 
     //SOCKET STUFF
     private ServerSocket ss;
@@ -79,6 +78,7 @@ public class GameBoardServer {
         yourBoard = SetupController.seaTiles;
     }
 
+
     public void initialize() {
         Runnable Initialize = () -> {
             try {
@@ -94,6 +94,7 @@ public class GameBoardServer {
         };
         new Thread(Initialize).start();
     }
+
 
     private void initCommunication(Socket s) {
         try {
@@ -120,9 +121,8 @@ public class GameBoardServer {
                             enemyBoard.add(Integer.parseInt(tile));
                         }
 
-                        Platform.runLater(() -> {
-                            initBoard();
-                        });
+                        Platform.runLater(this::initBoard);
+
                     } else if (request.startsWith("HIT")) {
                         request = request.replace("HIT", "");
                         request = request.trim();
@@ -289,4 +289,5 @@ public class GameBoardServer {
             shipParts.forEach((ship) -> ship.setFill(Tile.SHOT_BOAT_IMG));
         }
     }
+
 }

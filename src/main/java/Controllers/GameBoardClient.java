@@ -7,7 +7,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Rectangle;
 import objects.Tile;
 
 import java.io.*;
@@ -41,10 +40,10 @@ public class GameBoardClient {
     private final int squareSize = size / spots;
 
     private ArrayList<Integer> yourBoard = new ArrayList<>(100);
-    private ArrayList<Integer> enemyBoard = new ArrayList<>(100);
+    private final ArrayList<Integer> enemyBoard = new ArrayList<>(100);
 
-    private ArrayList<Tile> yourTiles = new ArrayList<>(100);
-    private ArrayList<Tile> enemyTiles = new ArrayList<>(100);
+    private final ArrayList<Tile> yourTiles = new ArrayList<>(100);
+    private final ArrayList<Tile> enemyTiles = new ArrayList<>(100);
 
     //SOCKET STUFF
     private Socket socket;
@@ -115,9 +114,8 @@ public class GameBoardClient {
                             enemyBoard.add(Integer.parseInt(tile));
                         }
 
-                        Platform.runLater(() -> {
-                            initBoard();
-                        });
+                        Platform.runLater(this::initBoard);
+
                     } else if (request.startsWith("HIT")) {
                         request = request.replace("HIT", "");
                         request = request.trim();
@@ -182,7 +180,7 @@ public class GameBoardClient {
             String msg = textField.getText();
             textField.setText("");
 
-            messages += "Ty: " + msg  + "\n";
+            messages += "Ty: " + msg + "\n";
             textArea.setText(messages);
 
             sendMessageToServer(msg);
