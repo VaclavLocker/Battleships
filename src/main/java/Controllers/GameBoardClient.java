@@ -74,10 +74,10 @@ public class GameBoardClient {
         yourBoard = SetupController.seaTiles;
     }
 
-    public void initialize() {
+    public void initialize(String ip, int port) {
         Runnable Initialize = () -> {
             try {
-                socket = new Socket(SetupController.ip, SetupController.port);
+                socket = new Socket(ip, port);
 
                 System.out.println("CLIENT STARTED");
                 initCommunication(socket);

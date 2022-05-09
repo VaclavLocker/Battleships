@@ -77,10 +77,10 @@ public class GameBoardServer {
     }
 
 
-    public void initialize() {
+    public void initialize(int port) {
         Runnable Initialize = () -> {
             try {
-                ss = new ServerSocket(SetupController.port);
+                ss = new ServerSocket(port);
                 s = ss.accept();
 
                 System.out.println("SERVER STARTED");
