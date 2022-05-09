@@ -70,7 +70,7 @@ public class GameBoardClient {
         textArea = area;
 
         turnLabel.setText("Nepřítel");
-        message.setOnMouseClicked(event -> sendMsg());
+        message.setOnAction(event -> sendMsg());
 
         yourBoard = SetupController.seaTiles;
     }

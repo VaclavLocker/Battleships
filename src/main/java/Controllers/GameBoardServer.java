@@ -73,7 +73,7 @@ public class GameBoardServer {
         textField = field;
         textArea = area;
 
-        message.setOnMouseClicked(event -> sendMsg());
+        message.setOnAction(event -> sendMsg());
 
         yourBoard = SetupController.seaTiles;
     }
