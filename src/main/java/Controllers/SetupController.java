@@ -328,8 +328,9 @@ public class SetupController {
 
     public void startServer(ActionEvent event) {
         try {
-            int port = Integer.parseInt(portTextField.getText());
-            if (port >= 0 && port <= 65535) {
+            int tempPort = Integer.parseInt(portTextField.getText());
+            if (tempPort >= 0 && tempPort <= 65535) {
+                port = tempPort;
                 type = SERVER;
                 playerReady(event);
             } else {
@@ -348,7 +349,7 @@ public class SetupController {
             if (tempPort >= 0 && tempPort <= 65535 && !Objects.equals(tempIp, "")) {
                 port = tempPort;
                 ip = tempIp;
-                type = SERVER;
+                type = CLIENT;
                 playerReady(event);
             } else {
                 errorPane.setVisible(true);

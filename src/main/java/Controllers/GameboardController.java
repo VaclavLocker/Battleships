@@ -35,9 +35,9 @@ public class GameboardController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         if (SetupController.type == SetupController.SERVER) {
-            new GameBoardServer(yourPane, enemyPane, turn, sendMsg, textField, textArea).initialize(SetupController.port);
+            new GameBoardServer(yourPane, enemyPane, turn, sendMsg, textField, textArea).initialize();
         } else {
-            new GameBoardClient(yourPane, enemyPane, turn, sendMsg, textField, textArea).initialize(SetupController.ip, SetupController.port);
+            new GameBoardClient(yourPane, enemyPane, turn, sendMsg, textField, textArea).initialize();
         }
     }
 }
