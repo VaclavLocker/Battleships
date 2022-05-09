@@ -49,23 +49,29 @@ public class Tile extends Rectangle {
     }
 
     public void hit() {
-        STATUS = SHOT;
-
         if (TYPE == WATER) {
             this.setFill(MISS_IMG);
         } else if (TYPE == SHIP) {
             if (OWNER == YOU) {
                 this.setFill(SHOT_BOAT_IMG);
+            } else if (OWNER == ENEMY && STATUS == SHOT) {
+                this.setFill(SHOT_BOAT_IMG);
             } else if (OWNER == ENEMY) {
                 this.setFill(SHOT_WATER_IMG);
             }
         }
+
+        STATUS = SHOT;
     }
+
 
     public void reveal() {
         if (STATUS == CLEAR) {
             this.setFill(TYPE == SHIP ? SHIP_COLOR : WATER_COLOR);
         }
-    }
 
+    @Override
+    public String toString() {
+        return TYPE == WATER ? "Voda" : "Lod";
+    }
 }
