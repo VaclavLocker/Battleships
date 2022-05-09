@@ -12,6 +12,7 @@ import objects.Tile;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Objects;
 import java.util.function.Predicate;
 
@@ -122,8 +123,7 @@ public class GameBoardClient {
 
                         String finalRequest = request;
                         Platform.runLater(() -> {
-                            yourTiles.get(Integer.parseInt(finalRequest)).hit();
-                            checkWin();
+                            hitTile(yourTiles.get(Integer.parseInt(finalRequest)));
                         });
                     } else if (request.startsWith("MISS")) {
                         request = request.replace("MISS", "");
@@ -173,6 +173,12 @@ public class GameBoardClient {
     private void initBoard() {
         fillYourBoard();
         fillEnemyBoard();
+    }
+
+    private void hitTile(Tile tile) {
+        tile.hit();
+        checkIfSinked(tile);
+        checkWin();
     }
 
     private void sendMsg() {
@@ -226,19 +232,20 @@ public class GameBoardClient {
 
     private void onClick(Tile tile) {
         if (TURN == YOUR_TURN && tile.STATUS == Tile.CLEAR && TURN != WINNER) {
-            tile.hit();
+            hitTile(tile);
 
             if (tile.TYPE == Tile.WATER) {
                 TURN = ENEMY_TURN;
                 turnLabel.setText("Nepřítel");
                 sendMissToServer(enemyTiles.indexOf(tile));
             } else if (tile.TYPE == Tile.SHIP) {
-                checkIfSinked(tile);
                 sendHitToServer(enemyTiles.indexOf(tile));
             }
         }
+    }
 
-        checkWin();
+    private void revealShips() {
+        enemyTiles.forEach(Tile::reveal);
     }
 
     private void checkWin() {
@@ -256,11 +263,13 @@ public class GameBoardClient {
 
         if (enemyShips.stream().allMatch(sinked)) {
             TURN = WINNER;
+            revealShips();
             turnLabel.setText("Vyhrál jsi!!!!");
         }
 
         if (yourShips.stream().allMatch(sinked)) {
             TURN = WINNER;
+            revealShips();
             turnLabel.setText("Prohrál jsi :(");
         }
 
@@ -268,7 +277,9 @@ public class GameBoardClient {
 
     private void checkIfSinked(Tile tile) {
         ArrayList<Tile> shipParts = new ArrayList<>();
-        for (Tile shipPart : enemyTiles) {
+        ArrayList<Tile> currentTiles = new ArrayList<>(tile.OWNER == Tile.ENEMY ? enemyTiles : yourTiles);
+
+        for (Tile shipPart : currentTiles) {
             if (shipPart.SHIP_ID == tile.SHIP_ID) shipParts.add(shipPart);
         }
 
@@ -276,6 +287,71 @@ public class GameBoardClient {
 
         if (shipParts.stream().allMatch(sinked)) {
             shipParts.forEach((ship) -> ship.setFill(Tile.SHOT_BOAT_IMG));
+
+            for (Tile ship : shipParts) {
+                int shipIndex = currentTiles.indexOf(ship);
+
+                // TOP
+                boolean TOP = Math.floorDiv(shipIndex, spots) == 0;
+                // BOT
+                boolean BOT = Math.floorDiv(shipIndex, spots) == spots - 1;
+                // LEFT
+                boolean LEFT = shipIndex % spots == 0;
+                // RIGHT
+                boolean RIGHT = (shipIndex + 1) % spots == 0;
+
+                if (TOP && LEFT) {
+                    currentTiles.get(shipIndex + 1).hit();
+                    currentTiles.get(shipIndex + spots).hit();
+                    currentTiles.get(shipIndex + spots + 1).hit();
+                } else if ( TOP && RIGHT) {
+                    currentTiles.get(shipIndex - 1).hit();
+                    currentTiles.get(shipIndex + spots).hit();
+                    currentTiles.get(shipIndex + spots - 1).hit();
+                } else if ( BOT && LEFT ) {
+                    currentTiles.get(shipIndex + 1).hit();
+                    currentTiles.get(shipIndex - spots).hit();
+                    currentTiles.get(shipIndex - spots + 1).hit();
+                } else if ( BOT && RIGHT) {
+                    currentTiles.get(shipIndex - 1).hit();
+                    currentTiles.get(shipIndex - spots).hit();
+                    currentTiles.get(shipIndex - spots - 1).hit();
+                } else if ( TOP ) {
+                    currentTiles.get(shipIndex - 1).hit();
+                    currentTiles.get(shipIndex + 1).hit();
+                    currentTiles.get(shipIndex + spots - 1).hit();
+                    currentTiles.get(shipIndex + spots).hit();
+                    currentTiles.get(shipIndex + spots + 1).hit();
+                } else if ( BOT ) {
+                    currentTiles.get(shipIndex - 1).hit();
+                    currentTiles.get(shipIndex + 1).hit();
+                    currentTiles.get(shipIndex - spots - 1).hit();
+                    currentTiles.get(shipIndex - spots).hit();
+                    currentTiles.get(shipIndex - spots + 1).hit();
+                } else if ( LEFT ) {
+                    currentTiles.get(shipIndex - spots).hit();
+                    currentTiles.get(shipIndex - spots + 1).hit();
+                    currentTiles.get(shipIndex + 1).hit();
+                    currentTiles.get(shipIndex + spots).hit();
+                    currentTiles.get(shipIndex + spots + 1).hit();
+                } else if ( RIGHT ) {
+                    currentTiles.get(shipIndex - spots).hit();
+                    currentTiles.get(shipIndex - spots - 1).hit();
+                    currentTiles.get(shipIndex - 1).hit();
+                    currentTiles.get(shipIndex + spots).hit();
+                    currentTiles.get(shipIndex + spots - 1).hit();
+                } else {
+                    currentTiles.get(shipIndex - spots - 1).hit();
+                    currentTiles.get(shipIndex - spots).hit();
+                    currentTiles.get(shipIndex - spots + 1).hit();
+                    currentTiles.get(shipIndex - 1).hit();
+                    currentTiles.get(shipIndex + 1).hit();
+                    currentTiles.get(shipIndex + spots - 1).hit();
+                    currentTiles.get(shipIndex + spots).hit();
+                    currentTiles.get(shipIndex + spots + 1).hit();
+                }
+            }
+
         }
     }
 
