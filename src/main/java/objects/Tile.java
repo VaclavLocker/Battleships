@@ -60,7 +60,12 @@ public class Tile extends Rectangle {
                 this.setFill(SHOT_WATER_IMG);
             }
         }
+    }
 
+    public void reveal() {
+        if (STATUS == CLEAR) {
+            this.setFill(TYPE == SHIP ? SHIP_COLOR : WATER_COLOR);
+        }
     }
 
 }

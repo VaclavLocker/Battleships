@@ -241,6 +241,10 @@ public class GameBoardClient {
         checkWin();
     }
 
+    private void revealShips() {
+        enemyTiles.forEach(Tile::reveal);
+    }
+
     private void checkWin() {
         ArrayList<Tile> enemyShips = new ArrayList<>();
         for (Tile shipPart : enemyTiles) {
@@ -256,11 +260,13 @@ public class GameBoardClient {
 
         if (enemyShips.stream().allMatch(sinked)) {
             TURN = WINNER;
+            revealShips();
             turnLabel.setText("Vyhrál jsi!!!!");
         }
 
         if (yourShips.stream().allMatch(sinked)) {
             TURN = WINNER;
+            revealShips();
             turnLabel.setText("Prohrál jsi :(");
         }
 
