@@ -69,6 +69,7 @@ public class Tile extends Rectangle {
         if (STATUS == CLEAR) {
             this.setFill(TYPE == SHIP ? SHIP_COLOR : WATER_COLOR);
         }
+    }
 
     @Override
     public String toString() {
