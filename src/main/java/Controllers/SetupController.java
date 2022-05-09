@@ -9,10 +9,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import objects.Ship;
 
@@ -26,6 +28,8 @@ import java.util.stream.IntStream;
 public class SetupController {
 
     //Lukášovo info start
+    public static int port = 0;
+    public static String ip = "";
     public static final int SERVER = 1;
     public static final int CLIENT = 2;
     public static ArrayList<Integer> seaTiles = new ArrayList<>(Collections.nCopies(101,0));
@@ -43,6 +47,12 @@ public class SetupController {
 
     @FXML
     Button rotateBtn;
+
+    @FXML
+    TextField ipTextField;
+
+    @FXML
+    TextField portTextField;
 
     GridPane errorPane;
     Pane waitingPane;
@@ -72,7 +82,8 @@ public class SetupController {
         waitingPane = new Pane();
         closePaneButton = new Button();
         errorPane.setStyle("-fx-background-color: gray");
-        Label text = new Label("Musíš dát všechny lodě na desku");
+        Label text = new Label("Chyba");
+        text.setFont(new Font(40));
         closePaneButton.setText("Zpět");
         closePaneButton.setOnMouseClicked(mouseEvent -> errorPane.setVisible(false));
         VBox center = new VBox(text, closePaneButton);
@@ -315,14 +326,37 @@ public class SetupController {
     }
 
 
-    public void startServer(ActionEvent event) throws IOException {
-        type = SERVER;
-        playerReady(event);
+    public void startServer(ActionEvent event) {
+        try {
+            int port = Integer.parseInt(portTextField.getText());
+            if (port >= 0 && port <= 65535) {
+                type = SERVER;
+                playerReady(event);
+            } else {
+                errorPane.setVisible(true);
+            }
+
+        } catch(Exception e) {
+            errorPane.setVisible(true);
+        }
     }
 
-    public void startClient(ActionEvent event) throws IOException {
-        type = CLIENT;
-        playerReady(event);
+    public void startClient(ActionEvent event) {
+        try {
+            int tempPort = Integer.parseInt(portTextField.getText());
+            String tempIp = ipTextField.getText();
+            if (tempPort >= 0 && tempPort <= 65535 && !Objects.equals(tempIp, "")) {
+                port = tempPort;
+                ip = tempIp;
+                type = SERVER;
+                playerReady(event);
+            } else {
+                errorPane.setVisible(true);
+            }
+
+        } catch(Exception e) {
+            errorPane.setVisible(true);
+        }
     }
     public void playerReady(ActionEvent event) throws IOException {
         if (ships.stream().noneMatch(ship -> ship.getDockyardX() == ship.getStartX())) {

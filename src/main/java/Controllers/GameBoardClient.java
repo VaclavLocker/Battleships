@@ -49,8 +49,6 @@ public class GameBoardClient {
     //SOCKET STUFF
     private Socket socket;
 
-    private final int PORT = 56789;
-
     private BufferedReader in;
     private PrintWriter out;
 
@@ -79,7 +77,7 @@ public class GameBoardClient {
     public void initialize() {
         Runnable Initialize = () -> {
             try {
-                socket = new Socket("localhost", PORT);
+                socket = new Socket(SetupController.ip, SetupController.port);
 
                 System.out.println("CLIENT STARTED");
                 initCommunication(socket);

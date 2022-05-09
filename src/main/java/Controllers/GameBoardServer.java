@@ -53,8 +53,6 @@ public class GameBoardServer {
     private ServerSocket ss;
     private Socket s;
 
-    private final int PORT = 56789;
-
     private BufferedReader in;
     private PrintWriter out;
 
@@ -82,7 +80,7 @@ public class GameBoardServer {
     public void initialize() {
         Runnable Initialize = () -> {
             try {
-                ss = new ServerSocket(PORT);
+                ss = new ServerSocket(SetupController.port);
                 s = ss.accept();
 
                 System.out.println("SERVER STARTED");
